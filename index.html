@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Speech Graphs</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Local annotation graph renderer</p>
+        <h1 id="page-title">Speech Graphs</h1>
+        <p class="lede">
+          Paste annotated speech and render the sequence of entity mentions as a directed graph. Text stays in this browser tab and is never sent to a server.
+        </p>
+      </section>
+
+      <section class="panel intro" aria-labelledby="purpose-title">
+        <div>
+          <h2 id="purpose-title">Purpose</h2>
+          <p>
+            Use this page to inspect how annotated entities recur and transition through a speech sample. The language is ignored; only entity labels like <code>[the family]3</code> are parsed.
+          </p>
+        </div>
+        <div>
+          <h2>How to annotate</h2>
+          <p>
+            Wrap each mention in brackets and add its entity index immediately after it: <code>[ich]1</code>, <code>[die]3</code>. Consecutive mentions create directed edges.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel workspace" aria-labelledby="input-title">
+        <div class="input-head">
+          <div>
+            <h2 id="input-title">Annotated text</h2>
+            <p>Maximum 1000 words. Up to <span id="render-limit">20</span> renders are allowed per browser session.</p>
+          </div>
+          <button class="ghost" type="button" id="load-example">Load example</button>
+        </div>
+
+        <label class="sr-only" for="speech-text">Paste annotated text</label>
+        <textarea id="speech-text" rows="11" spellcheck="false" placeholder="Paste text with entity mentions such as [ich]1 and [die Familie]3..."></textarea>
+
+        <div class="actions">
+          <button type="button" id="render-button">Render graph</button>
+          <button class="secondary" type="button" id="clear-button">Clear</button>
+          <p id="status" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <section class="panel graph-panel" aria-labelledby="graph-title">
+          <div class="section-head">
+            <div>
+              <h2 id="graph-title">Graph</h2>
+              <p>Node size reflects recurrence. Arrow direction follows the mention sequence.</p>
+            </div>
+          </div>
+          <div id="graph" class="graph empty">
+            <p>Render a sample to see the speech graph.</p>
+          </div>
+        </section>
+
+        <aside class="panel metrics" aria-labelledby="metrics-title">
+          <h2 id="metrics-title">Metrics</h2>
+          <dl id="metrics-list">
+            <div><dt>Entities</dt><dd>—</dd></div>
+            <div><dt>Mentions</dt><dd>—</dd></div>
+            <div><dt>Edges</dt><dd>—</dd></div>
+            <div><dt>Density</dt><dd>—</dd></div>
+            <div><dt>Global efficiency</dt><dd>—</dd></div>
+            <div><dt>Transitivity</dt><dd>—</dd></div>
+            <div><dt>Average clustering</dt><dd>—</dd></div>
+            <div><dt>Average path length</dt><dd>—</dd></div>
+            <div><dt>Diameter</dt><dd>—</dd></div>
+            <div><dt>Mentions / word</dt><dd>—</dd></div>
+          </dl>
+        </aside>
+      </section>
+    </main>
+
+    <template id="metric-row">
+      <div><dt></dt><dd></dd></div>
+    </template>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
