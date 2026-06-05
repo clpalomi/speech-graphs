@@ -1,5 +1,3 @@
-# speech-graphs
-Speech graphs visualization and metric calculation
 # Speech Graphs
 
 Speech Graphs is a minimalist, browser-only webpage for rendering entity-transition graphs from annotated speech. It is designed for quick inspection of discourse samples where entity mentions are marked in text with bracketed spans followed by an integer index.
