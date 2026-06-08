@@ -23,6 +23,7 @@ const statusEl = document.querySelector("#status");
 document.querySelector("#render-limit").textContent = String(MAX_RENDERS);
 
 const metricLabels = [
+  ["Words", "words"],
   ["Entities", "entities"],
   ["Mentions", "mentions"],
   ["Edges", "edges"],
@@ -175,6 +176,7 @@ function calculateMetrics(graph, wordCount) {
   const isConnected = n <= 1 || reachablePairs === possiblePairs;
 
   return {
+    words: wordCount,
     entities: n,
     mentions,
     edges: edges.length,
