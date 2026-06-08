@@ -2,7 +2,16 @@ const MAX_WORDS = 1000;
 const MAX_RENDERS = 20;
 const RENDER_COUNTER_KEY = "speechGraphRenderCount";
 
-const exampleText = `Paste your text here`;
+const exampleText = `Last Friday afternoon, [Anna Wilson]1 stopped by [the neighborhood grocery store]2 on her way home from work. 
+[She]1 needed a few ingredients for dinner and hoped that [the store]2 would not be too busy. Near the entrance, [her friend Mark]3 
+was examining a display of fruit. When [Mark]3 noticed [Anna]1, [he]3 waved and walked over to say hello. The two friends chatted 
+for a few minutes about their plans for the weekend. While they were talking, [a store employee named Lisa Chen]4 
+was restocking shelves nearby. [The employee]4 greeted [the friends]1,3 and pointed out that fresh strawberries had just arrived.
+After filling [her shopping basket]5 with vegetables, bread, and fruit, [Anna]1 headed toward [the checkout counter]6. 
+At the register, [the cashier]7 scanned the items and asked whether [she]1 wanted a receipt. Meanwhile, [Mark]3 continued 
+shopping in another aisle. Once the payment was completed, [Anna]1 placed the groceries into reusable bags and thanked [the cashier]7. 
+As [she]1 left [the grocery store]2, [Mark]3 caught up with [her]1 outside. After a brief conversation, [the friends]1,3 said goodbye 
+and went their separate ways.`;
 
 const textArea = document.querySelector("#speech-text");
 const renderButton = document.querySelector("#render-button");
