@@ -51,6 +51,7 @@ The browser implementation mirrors the previous Python workflow:
 
 Metrics shown on the page:
 
+- Word count
 - Entity count
 - Mention count
 - Unique directed edge count
@@ -61,6 +62,10 @@ Metrics shown on the page:
 - Average shortest path length when the undirected graph is connected
 - Diameter when the undirected graph is connected
 - Mentions per word
+
+## Project reference
+
+In the context of studying coreference in psychotic discourse, this project references [Palominos, C. (2022). *Coreference delays in psychotic discourse: widening the temporal window*. *Schizophrenia Bulletin*, 10(12345678), 10-1093](https://academic.oup.com/schizophreniabulletin/article/49/Supplement_2/S153/7083526)
 
 ## Why calculations run in the browser
 
