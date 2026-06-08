@@ -151,6 +151,17 @@ button:disabled { cursor: not-allowed; opacity: 0.52; transform: none; }
 .node .label { fill: var(--muted); font-size: 0.72rem; font-weight: 600; transform: translateY(24px); }
 
 .metrics { padding: 24px; }
+.paper-reference {
+  margin-top: 18px;
+  padding: 0 4px;
+}
+.paper-reference p { margin-bottom: 0; }
+.paper-reference a {
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration-color: rgba(111, 91, 69, 0.42);
+  text-underline-offset: 0.18em;
+}
 dl { margin: 0; }
 dl div {
   align-items: baseline;
