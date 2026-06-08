@@ -12,7 +12,7 @@
         <p class="eyebrow">Local annotation graph renderer</p>
         <h1 id="page-title">Speech Graphs</h1>
         <p class="lede">
-          Paste annotated speech and render the sequence of entity mentions as a directed graph. Text stays in this browser tab and is never sent to a server.
+          Paste annotated speech and render the sequence of entities as a graph.
         </p>
       </section>
 
@@ -20,13 +20,13 @@
         <div>
           <h2 id="purpose-title">Purpose</h2>
           <p>
-            Use this page to inspect how annotated entities recur and transition through a speech sample. The language is ignored; only entity labels like <code>[the family]3</code> are parsed.
+            Use this page to inspect how annotated entities recur and transition through a speech sample. By now, natural language is ignored; only entity labels like <code>[Noun Phrase]1</code> are parsed.
           </p>
         </div>
         <div>
           <h2>How to annotate</h2>
           <p>
-            Wrap each mention in brackets and add its entity index immediately after it: <code>[ich]1</code>, <code>[die]3</code>. Consecutive mentions create directed edges.
+            Wrap each mention in brackets and add its entity index immediately after it: <code>[she]1</code>, <code>[the school]3</code>. Consecutive mentions create directed edges.
           </p>
         </div>
       </section>
@@ -41,7 +41,7 @@
         </div>
 
         <label class="sr-only" for="speech-text">Paste annotated text</label>
-        <textarea id="speech-text" rows="11" spellcheck="false" placeholder="Paste text with entity mentions such as [ich]1 and [die Familie]3..."></textarea>
+        <textarea id="speech-text" rows="11" spellcheck="false" placeholder="Paste text with entity mentions such as [she]1 and [a cat]3..."></textarea>
 
         <div class="actions">
           <button type="button" id="render-button">Render graph</button>
