@@ -148,7 +148,8 @@ button:disabled { cursor: not-allowed; opacity: 0.52; transform: none; }
 .edge { stroke: var(--edge); stroke-linecap: round; stroke-opacity: 0.62; }
 .node circle { fill: var(--node); stroke: var(--node-stroke); stroke-width: 1.6; }
 .node text { fill: var(--accent-strong); font-size: 0.82rem; font-weight: 800; text-anchor: middle; dominant-baseline: middle; }
-.node .label { fill: var(--muted); font-size: 0.72rem; font-weight: 600; transform: translateY(24px); }
+.node .recurrence-pill { fill: rgba(255, 253, 249, 0.92); stroke: var(--line); stroke-width: 1; }
+.node .recurrence { fill: var(--muted); font-size: 0.72rem; font-weight: 800; }
 
 .metrics { padding: 24px; }
 .paper-reference {
