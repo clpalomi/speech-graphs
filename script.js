@@ -17,10 +17,13 @@ const textArea = document.querySelector("#speech-text");
 const renderButton = document.querySelector("#render-button");
 const clearButton = document.querySelector("#clear-button");
 const loadExampleButton = document.querySelector("#load-example");
+const downloadPngButton = document.querySelector("#download-png");
 const graphEl = document.querySelector("#graph");
 const metricsList = document.querySelector("#metrics-list");
 const statusEl = document.querySelector("#status");
 document.querySelector("#render-limit").textContent = String(MAX_RENDERS);
+
+let currentGraphSvg = null;
 
 const metricLabels = [
   ["Words", "words"],
@@ -219,10 +222,17 @@ function renderGraph({ nodes, edges }) {
 
   graphEl.classList.remove("empty");
   graphEl.innerHTML = `
-    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Directed graph of annotated speech entities">
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Directed graph of annotated speech entities" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        .edge { stroke: #8a8178; stroke-linecap: round; stroke-opacity: 0.62; }
+        .node circle { fill: #f5d7a1; stroke: #6f4f2a; stroke-width: 1.6; }
+        .node text { fill: #3d3024; font: 800 18px Inter, Arial, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+        .node .recurrence-pill { fill: rgba(255, 253, 249, 0.92); stroke: #ded5ca; stroke-width: 1; }
+        .node .recurrence { fill: #70675e; font-size: 15px; font-weight: 800; }
+      </style>
       <defs>
         <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--edge)"></path>
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a8178"></path>
         </marker>
       </defs>
       <g class="edges">
@@ -233,6 +243,8 @@ function renderGraph({ nodes, edges }) {
       </g>
     </svg>
   `;
+  currentGraphSvg = graphEl.querySelector("svg");
+  downloadPngButton.disabled = false;
 }
 
 function renderEdge(edge, positions) {
@@ -261,14 +273,71 @@ function renderEdge(edge, positions) {
 function renderNode(node, position, maxRecurrence) {
   const r = 18 + (node.recurrence / maxRecurrence) * 14;
   const label = node.mentions[0].replace(/[<>&"]/g, "").slice(0, 28);
+  const recurrenceY = r + 18;
   return `
     <g class="node" transform="translate(${position.x} ${position.y})">
       <title>Entity ${node.id}: ${node.recurrence} mention(s). Example: ${label}</title>
       <circle r="${r}"></circle>
       <text>${node.id}</text>
-      <text class="label">${node.recurrence}×</text>
+      <rect class="recurrence-pill" x="-20" y="${recurrenceY - 10}" width="40" height="20" rx="10"></rect>
+      <text class="recurrence" y="${recurrenceY}">${node.recurrence}×</text>
     </g>
   `;
+}
+
+function downloadGraphAsPng() {
+  if (!currentGraphSvg) {
+    setStatus("Render a graph before downloading a PNG.", true);
+    return;
+  }
+
+  const serializer = new XMLSerializer();
+  const svgText = serializer.serializeToString(currentGraphSvg);
+  const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(svgBlob);
+  const image = new Image();
+
+  image.addEventListener("load", () => {
+    const viewBox = currentGraphSvg.viewBox.baseVal;
+    const scale = 2;
+    const canvas = document.createElement("canvas");
+    canvas.width = viewBox.width * scale;
+    canvas.height = viewBox.height * scale;
+    const context = canvas.getContext("2d");
+    if (!context) {
+      URL.revokeObjectURL(url);
+      setStatus("Could not prepare the PNG download.", true);
+      return;
+    }
+    context.fillStyle = "#fffdf9";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        setStatus("Could not prepare the PNG download.", true);
+        return;
+      }
+
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = `speech-graph-${new Date().toISOString().slice(0, 10)}.png`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
+      setStatus("Graph PNG downloaded.");
+    }, "image/png");
+  });
+
+  image.addEventListener("error", () => {
+    URL.revokeObjectURL(url);
+    setStatus("Could not prepare the PNG download.", true);
+  });
+
+  image.src = url;
 }
 
 function validate(text) {
@@ -310,9 +379,12 @@ clearButton.addEventListener("click", () => {
   textArea.value = "";
   graphEl.classList.add("empty");
   graphEl.innerHTML = "<p>Render a sample to see the speech graph.</p>";
+  currentGraphSvg = null;
+  downloadPngButton.disabled = true;
   renderMetrics(Object.fromEntries(metricLabels.map(([, key]) => [key, "—"])));
   setStatus("Text cleared. No pasted text was saved.");
 });
 
 renderButton.addEventListener("click", handleRender);
+downloadPngButton.addEventListener("click", downloadGraphAsPng);
 setRenderCount(getRenderCount());
